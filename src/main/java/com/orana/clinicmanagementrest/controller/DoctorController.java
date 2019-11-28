@@ -1,19 +1,19 @@
 package com.orana.clinicmanagementrest.controller;
 
-import com.orana.clinicmanagementrest.model.Contact;
-import com.orana.clinicmanagementrest.repository.ContactRepository;
+import com.orana.clinicmanagementrest.model.Doctor;
+import com.orana.clinicmanagementrest.repository.DoctorRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping({"/contacts"})
-public class ContactController {
+@RequestMapping({"/doctors"})
+public class DoctorController {
 
-    private ContactRepository repository;
+    private DoctorRepository repository;
 
-    ContactController(ContactRepository contactRepository) {
+    DoctorController(DoctorRepository contactRepository) {
         this.repository = contactRepository;
     }
 
@@ -23,20 +23,20 @@ public class ContactController {
     }
 
     @GetMapping(path = {"/{id}"})
-    public ResponseEntity<Contact> findById(@PathVariable long id){
+    public ResponseEntity<Doctor> findById(@PathVariable long id){
         return repository.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Contact create(@RequestBody Contact contact){
+    public Doctor create(@RequestBody Doctor contact){
         return repository.save(contact);
     }
 
-    @PutMapping(value="/{id}")
-    public ResponseEntity<Contact> update(@PathVariable("id") long id,
-                                          @RequestBody Contact contact){
+/*    @PutMapping(value="/{id}")
+    public ResponseEntity<Doctor> update(@PathVariable("id") long id,
+                                          @RequestBody Doctor contact){
         return repository.findById(id)
                 .map(record -> {
                     record.setName(contact.getName());
@@ -45,7 +45,7 @@ public class ContactController {
                     Contact updated = repository.save(record);
                     return ResponseEntity.ok().body(updated);
                 }).orElse(ResponseEntity.notFound().build());
-    }
+    }*/
 
     @DeleteMapping(path ={"/{id}"})
     public ResponseEntity<?> delete(@PathVariable("id") long id) {

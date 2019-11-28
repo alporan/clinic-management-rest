@@ -1,9 +1,8 @@
 package com.orana.clinicmanagementrest.repository;
 
-import com.orana.clinicmanagementrest.model.Contact;
+import com.orana.clinicmanagementrest.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ContactRepository
-        extends JpaRepository<Contact, Long> { }
+public interface AppointmentRepository extends JpaRepository<Appointment, Long> { }
