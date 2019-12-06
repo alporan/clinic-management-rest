@@ -1,21 +1,29 @@
 package com.orana.clinicmanagementrest.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Entity
 @Table(name = "doctor")
 public class Doctor {
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
+
     @NotBlank
+    @Column(name = "name")
     private String name;
+
     @NotBlank
+    @Column(name = "surname")
     private String surname;
+
+    @OneToMany(mappedBy = "appointment", cascade = {
+            CascadeType.ALL
+    })
+    private List< Appointment > appointments;
 
     public Doctor() {
         super();

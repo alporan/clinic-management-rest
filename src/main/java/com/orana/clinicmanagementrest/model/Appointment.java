@@ -1,23 +1,33 @@
 package com.orana.clinicmanagementrest.model;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name = "doctor")
+@Table(name = "appointment")
 public class Appointment {
     @Id
     @GeneratedValue
+    @Column(name = "id")
     private Long id;
+
     @NotBlank
-    private Long patientId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Patient patient;
+
     @NotBlank
-    private Long doctorId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Doctor doctor;
+
     @NotBlank
     private Date appointmentDate;
 
@@ -25,10 +35,8 @@ public class Appointment {
         super();
     }
 
-    public Appointment(@NotBlank Long patientId, @NotBlank Long doctorId, @NotBlank Date appointmentDate) {
+    public Appointment(@NotBlank Date appointmentDate) {
         super();
-        this.patientId = patientId;
-        this.doctorId = doctorId;
         this.appointmentDate = appointmentDate;
     }
 
@@ -40,20 +48,20 @@ public class Appointment {
         this.id = id;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public Doctor getInstructor() {
+        return doctor;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setInstructor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getAppointmentDate() {
