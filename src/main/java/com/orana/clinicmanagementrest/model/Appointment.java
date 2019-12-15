@@ -1,42 +1,32 @@
 package com.orana.clinicmanagementrest.model;
 
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
 @Table(name = "appointment")
 public class Appointment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "patientid")
     private Patient patient;
 
-    @NotBlank
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "doctorid")
     private Doctor doctor;
 
-    @NotBlank
+    @Column(name = "appointmentdate")
     private Date appointmentDate;
 
-    public Appointment() {
-        super();
-    }
+    public Appointment() { }
 
-    public Appointment(@NotBlank Date appointmentDate) {
-        super();
+    public Appointment(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
@@ -56,11 +46,11 @@ public class Appointment {
         this.patient = patient;
     }
 
-    public Doctor getInstructor() {
+    public Doctor getDoctor() {
         return doctor;
     }
 
-    public void setInstructor(Doctor doctor) {
+    public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
 

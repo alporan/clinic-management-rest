@@ -1,36 +1,35 @@
 package com.orana.clinicmanagementrest.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
 @Table(name = "patient")
 public class Patient {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @NotBlank
     @Column(name = "name")
     private String name;
 
-    @NotBlank
     @Column(name = "surname")
     private String surname;
 
-    @OneToMany(mappedBy = "appointment", cascade = {
-            CascadeType.ALL
-    })
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    @JsonBackReference("patient")
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
     private List< Appointment > appointments;
 
-    public Patient() {
-        super();
-    }
+    public Patient() { }
 
-    public Patient(@NotBlank String name, @NotBlank String surname) {
-        super();
+    public Patient(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
@@ -58,4 +57,8 @@ public class Patient {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+
+    public List < Appointment > getAppointments() { return appointments; }
+
+    public void setAppointments(List < Appointment > appointments) { this.appointments = appointments; }
 }
