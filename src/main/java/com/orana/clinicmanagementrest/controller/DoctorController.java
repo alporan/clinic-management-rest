@@ -2,56 +2,41 @@ package com.orana.clinicmanagementrest.controller;
 
 import com.orana.clinicmanagementrest.model.Doctor;
 import com.orana.clinicmanagementrest.repository.DoctorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping({"/doctors"})
 public class DoctorController {
 
-    private DoctorRepository repository;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    DoctorController(DoctorRepository contactRepository) {
-        this.repository = contactRepository;
+    @GetMapping("/doctors")
+    public List<Doctor> getDoctors() {
+        return doctorRepository.findAll();
     }
 
-    @GetMapping
-    public List findAll(){
-        return repository.findAll();
-    }
-
-    @GetMapping(path = {"/{id}"})
-    public ResponseEntity<Doctor> findById(@PathVariable long id){
-        return repository.findById(id)
+    @GetMapping("/doctors/{id}")
+    public ResponseEntity<Doctor> findById(@PathVariable(value = "id") long id){
+        return doctorRepository.findById(id)
                 .map(record -> ResponseEntity.ok().body(record))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Doctor create(@RequestBody Doctor contact){
-        return repository.save(contact);
+    @PostMapping("/doctors")
+    public Doctor createDoctor(@RequestBody Doctor doctor){
+        return doctorRepository.save(doctor);
     }
 
-/*    @PutMapping(value="/{id}")
-    public ResponseEntity<Doctor> update(@PathVariable("id") long id,
-                                          @RequestBody Doctor contact){
-        return repository.findById(id)
-                .map(record -> {
-                    record.setName(contact.getName());
-                    record.setEmail(contact.getEmail());
-                    record.setPhone(contact.getPhone());
-                    Contact updated = repository.save(record);
-                    return ResponseEntity.ok().body(updated);
-                }).orElse(ResponseEntity.notFound().build());
-    }*/
 
-    @DeleteMapping(path ={"/{id}"})
+    @DeleteMapping("/doctors/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        return repository.findById(id)
+        return doctorRepository.findById(id)
                 .map(record -> {
-                    repository.deleteById(id);
+                    doctorRepository.deleteById(id);
                     return ResponseEntity.ok().build();
                 }).orElse(ResponseEntity.notFound().build());
     }

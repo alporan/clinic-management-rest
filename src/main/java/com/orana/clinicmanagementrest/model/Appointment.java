@@ -1,34 +1,32 @@
 package com.orana.clinicmanagementrest.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "doctor")
+@Table(name = "appointment")
 public class Appointment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @NotBlank
-    private Long patientId;
-    @NotBlank
-    private Long doctorId;
-    @NotBlank
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "patientid")
+    private Patient patient;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "doctorid")
+    private Doctor doctor;
+
+    @Column(name = "appointmentdate")
     private Date appointmentDate;
 
-    public Appointment() {
-        super();
-    }
+    public Appointment() { }
 
-    public Appointment(@NotBlank Long patientId, @NotBlank Long doctorId, @NotBlank Date appointmentDate) {
-        super();
-        this.patientId = patientId;
-        this.doctorId = doctorId;
+    public Appointment(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 
@@ -40,20 +38,20 @@ public class Appointment {
         this.id = id;
     }
 
-    public Long getPatientId() {
-        return patientId;
+    public Patient getPatient() {
+        return patient;
     }
 
-    public void setPatientId(Long patientId) {
-        this.patientId = patientId;
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
-    public Long getDoctorId() {
-        return doctorId;
+    public Doctor getDoctor() {
+        return doctor;
     }
 
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
     public Date getAppointmentDate() {

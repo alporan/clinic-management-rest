@@ -1,28 +1,38 @@
 package com.orana.clinicmanagementrest.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "doctor")
 public class Doctor {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @NotBlank
+
+    @Column(name = "name")
     private String name;
-    @NotBlank
+
+    @Column(name = "surname")
     private String surname;
 
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER)
+    @JsonBackReference("doctor")
+    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+    private List< Appointment > appointments;
+
     public Doctor() {
-        super();
+
     }
 
-    public Doctor(@NotBlank String name, @NotBlank String surname) {
-        super();
+    public Doctor(String name, String surname) {
         this.name = name;
         this.surname = surname;
     }
@@ -39,9 +49,7 @@ public class Doctor {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public void setName(String name) { this.name = name; }
 
     public String getSurname() {
         return surname;
@@ -49,5 +57,13 @@ public class Doctor {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public List < Appointment > getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List < Appointment > appointments) {
+        this.appointments = appointments;
     }
 }
