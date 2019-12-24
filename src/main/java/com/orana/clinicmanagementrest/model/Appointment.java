@@ -1,6 +1,6 @@
 package com.orana.clinicmanagementrest.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,6 +22,7 @@ public class Appointment {
     private Doctor doctor;
 
     @Column(name = "appointmentdate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date appointmentDate;
 
     public Appointment() { }
