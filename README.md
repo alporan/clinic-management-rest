@@ -1,11 +1,13 @@
 # clinic-management-rest
 
+## How to run
 
 You can clone this repository run it from Maven directly using the Spring Boot Maven plugin.
 ```
 ./mvnw spring-boot:run
 ```
 Then access application here: http://localhost:8080/
+
 
 ## Database configuration
 
