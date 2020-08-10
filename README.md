@@ -1,4 +1,4 @@
-# clinic-management-rest
+# Clinic Management Appication - Backend
 
 ## How to run
 
